@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:SwiftyJSON/SwiftyJSON.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Alamofire/Alamofire.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:GistsRest/GistsRest.xcodeproj">
    </FileRef>
 </Workspace>
