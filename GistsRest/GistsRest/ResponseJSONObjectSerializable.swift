@@ -11,5 +11,5 @@ import SwiftyJSON
 
 public protocol ResponseJSONObjectSerializable
 {
-    init?(json : SwiftJSON)
+    init?(json : SwiftyJSON.JSON)
 }

@@ -22,4 +22,12 @@ class GitHubAPIManager
             }
         }
     }
+    
+    func getPublicGists(completionHandler : @escaping (Result<[Gist]>) -> Void) {
+        Alamofire.request(GistRouter.GetPublic()).responseArray {
+            (response : DataResponse<[Gist]>) in
+            completionHandler(response.result)
+        }
+        
+    }
 }

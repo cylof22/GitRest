@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		681D35311E7D5DF400E1C631 /* Gist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D35301E7D5DF400E1C631 /* Gist.swift */; };
 		681D35331E7D6EED00E1C631 /* ResponseJSONObjectSerializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D35321E7D6EED00E1C631 /* ResponseJSONObjectSerializable.swift */; };
+		681D35351E7D701400E1C631 /* AlmofireRequest_JSONSerializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D35341E7D701400E1C631 /* AlmofireRequest_JSONSerializable.swift */; };
 		68507BC11E754FE500654588 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68507BC01E754FE500654588 /* Alamofire.framework */; };
 		68507BC31E754FEC00654588 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68507BC21E754FEC00654588 /* SwiftyJSON.framework */; };
 		68507BC51E756C2B00654588 /* GitHubAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68507BC41E756C2B00654588 /* GitHubAPIManager.swift */; };
@@ -24,6 +25,7 @@
 /* Begin PBXFileReference section */
 		681D35301E7D5DF400E1C631 /* Gist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gist.swift; sourceTree = "<group>"; };
 		681D35321E7D6EED00E1C631 /* ResponseJSONObjectSerializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseJSONObjectSerializable.swift; sourceTree = "<group>"; };
+		681D35341E7D701400E1C631 /* AlmofireRequest_JSONSerializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlmofireRequest_JSONSerializable.swift; sourceTree = "<group>"; };
 		68507BC01E754FE500654588 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = "../Alamofire/build/Debug-iphoneos/Alamofire.framework"; sourceTree = "<group>"; };
 		68507BC21E754FEC00654588 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = "../SwiftyJSON/build/Debug-iphoneos/SwiftyJSON.framework"; sourceTree = "<group>"; };
 		68507BC41E756C2B00654588 /* GitHubAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubAPIManager.swift; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 				68507BC61E75783100654588 /* GistRouter.swift */,
 				681D35301E7D5DF400E1C631 /* Gist.swift */,
 				681D35321E7D6EED00E1C631 /* ResponseJSONObjectSerializable.swift */,
+				681D35341E7D701400E1C631 /* AlmofireRequest_JSONSerializable.swift */,
 			);
 			path = GistsRest;
 			sourceTree = "<group>";
@@ -168,6 +171,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				68D4A4751E73FD19002FC0E4 /* DetailViewController.swift in Sources */,
+				681D35351E7D701400E1C631 /* AlmofireRequest_JSONSerializable.swift in Sources */,
 				68507BC51E756C2B00654588 /* GitHubAPIManager.swift in Sources */,
 				681D35331E7D6EED00E1C631 /* ResponseJSONObjectSerializable.swift in Sources */,
 				681D35311E7D5DF400E1C631 /* Gist.swift in Sources */,
