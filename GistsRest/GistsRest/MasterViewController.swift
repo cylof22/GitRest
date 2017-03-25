@@ -75,6 +75,23 @@ class MasterViewController: UITableViewController {
         let gist = gists[indexPath.row]
         cell.textLabel!.text = gist.m_description
         cell.detailTextLabel!.text = gist.m_ownerLogin
+        if let url = gist.m_ownerAvatorURL {
+            GitHubAPIManager.sharedInstance.imageFromURLString(imageURLString: url, completionHandler: {
+                (image, requestError) in
+                if let error = requestError {
+                    print(error)
+                }
+                
+                if let cellUpdate = self.tableView?.cellForRow(at: indexPath) {
+                    cellUpdate.imageView?.image = image
+                    cellUpdate.setNeedsLayout()
+                }
+                
+            })
+        }
+        else {
+            cell.imageView?.image = nil
+        }
         return cell
     }
 

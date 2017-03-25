@@ -9,6 +9,7 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
+import UIKit
 
 class GitHubAPIManager
 {
@@ -28,6 +29,21 @@ class GitHubAPIManager
             (response : DataResponse<[Gist]>) in
             completionHandler(response.result)
         }
-        
+    }
+    
+    func imageFromURLString(imageURLString : String, completionHandler :
+        @escaping (UIImage?, NSError?) -> Void)
+    {
+        Alamofire.request(imageURLString, method : .get).response {
+            (response : Alamofire.DefaultDataResponse) in
+            //(request, response, data, error) in
+            if response.data == nil {
+                completionHandler(nil, nil)
+                return
+            }
+            
+            let image = UIImage(data : response.data!)
+            completionHandler(image, nil)
+        }
     }
 }
