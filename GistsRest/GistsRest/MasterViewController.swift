@@ -14,7 +14,8 @@ class MasterViewController: UITableViewController {
     var gists = [Gist]()
     var nextPageURLString : String?
     var isLoading = false
-
+    var dateFormatter = DateFormatter()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -34,6 +35,8 @@ class MasterViewController: UITableViewController {
         if( self.refreshControl == nil) {
             self.refreshControl = UIRefreshControl()
             self.refreshControl?.addTarget(self, action: #selector(MasterViewController.refresh(sender:)), for: UIControlEvents.valueChanged)
+            self.dateFormatter.dateStyle = DateFormatter.Style.short
+            self.dateFormatter.timeStyle = DateFormatter.Style.long
         }
         
         // initial the gist view
@@ -154,6 +157,10 @@ class MasterViewController: UITableViewController {
                     self.gists += fetchedGists
                 }
             }
+            
+            let now = Date()
+            let updateString = "Last Updated at " + self.dateFormatter.string(from: now)
+            self.refreshControl?.attributedTitle = NSAttributedString(string : updateString)
             
             self.tableView.reloadData()
             
