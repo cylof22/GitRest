@@ -30,8 +30,21 @@ class MasterViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         self.clearsSelectionOnViewWillAppear = self.splitViewController!.isCollapsed
+        
+        if( self.refreshControl == nil) {
+            self.refreshControl = UIRefreshControl()
+            self.refreshControl?.addTarget(self, action: #selector(MasterViewController.refresh(sender:)), for: UIControlEvents.valueChanged)
+        }
+        
+        // initial the gist view
+        if(nextPageURLString == nil) {
+            loadGists(urlToLoad: nil)
+        }
+        
         super.viewWillAppear(animated)
-        loadGists(urlToLoad: nextPageURLString)
+        //loadGists(urlToLoad: nextPageURLString)
+        
+        
         //GitHubAPIManager.sharedInstance.getStarredGistWithBasicAuth()
     }
 
@@ -125,6 +138,9 @@ class MasterViewController: UITableViewController {
             self.nextPageURLString = nextPage
             self.isLoading = false
             
+            if(self.refreshControl != nil && self.refreshControl!.isRefreshing) {
+                self.refreshControl!.endRefreshing()
+            }
             guard result.error == nil else
             {
                 print(result.error!)
@@ -142,7 +158,12 @@ class MasterViewController: UITableViewController {
             self.tableView.reloadData()
             
         }
-        
+    }
+    
+    func refresh(sender : AnyObject)
+    {
+        nextPageURLString = nil
+        loadGists(urlToLoad: nil)
     }
 
 }
