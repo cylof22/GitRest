@@ -12,7 +12,7 @@ class MasterViewController: UITableViewController {
 
     var detailViewController: DetailViewController? = nil
     var gists = [Gist]()
-
+    var nextPageURLString : String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,8 +30,8 @@ class MasterViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         self.clearsSelectionOnViewWillAppear = self.splitViewController!.isCollapsed
         super.viewWillAppear(animated)
-        loadGists()
-        
+        //loadGists()
+        GitHubAPIManager.sharedInstance.getStarredGistWithBasicAuth()
     }
 
     override func didReceiveMemoryWarning() {
@@ -109,9 +109,11 @@ class MasterViewController: UITableViewController {
         }
     }
 
-    func loadGists()
+    func loadGists(urlToLoad : String?)
     {
-        GitHubAPIManager.sharedInstance.getPublicGists() { result in
+        GitHubAPIManager.sharedInstance.getPublicGists(pageToLoad: urlToLoad) { (result, nextPage) in
+            self.nextPageURLString = nextPage
+            
             guard result.error == nil else
             {
                 print(result.error!)
@@ -119,7 +121,11 @@ class MasterViewController: UITableViewController {
             }
             
             if let fetchedGists = result.value {
-                self.gists = fetchedGists
+                if self.nextPageURLString == nil {
+                    self.gists = fetchedGists
+                } else {
+                    self.gists += fetchedGists
+                }
             }
             
             self.tableView.reloadData()

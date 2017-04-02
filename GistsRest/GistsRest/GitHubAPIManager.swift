@@ -24,10 +24,22 @@ class GitHubAPIManager
         }
     }
     
-    func getPublicGists(completionHandler : @escaping (Result<[Gist]>) -> Void) {
-        Alamofire.request(GistRouter.GetPublic()).responseArray {
-            (response : DataResponse<[Gist]>) in
-            completionHandler(response.result)
+    func getPublicGists(pageToLoad : String?, completionHandler : @escaping (Result<[Gist]>, String?) -> Void) {
+        if let urlString = pageToLoad {
+            self.getGists(urlRequest: GistRouter.GetPath(urlString), completionHandler: completionHandler)
+        } else
+        {
+            self.getGists(urlRequest: GistRouter.GetPublic(), completionHandler: completionHandler)
+        }
+    }
+    
+    func getStarredGistWithBasicAuth() -> Void
+    {
+        Alamofire.request(GistRouter.GetStarred()).responseJSON {
+            response in
+            if let receivedString = response.result.value {
+                print(receivedString)
+            }
         }
     }
     
@@ -45,5 +57,46 @@ class GitHubAPIManager
             let image = UIImage(data : response.data!)
             completionHandler(image, nil)
         }
+    }
+    
+    private func getGists(urlRequest : URLRequestConvertible, completionHandler :
+                @escaping (Result<[Gist]>, String?) -> Void)
+    {
+        Alamofire.request(urlRequest)
+        .validate()
+            .responseArray {
+                (response : DataResponse<[Gist]>) in
+                guard response.result.error == nil,
+                    let gists = response.result.value else {
+                        print(response.result.error!)
+                        completionHandler(response.result, nil)
+                        return
+                }
+                
+                let next = self.getNextPagesFromHeaders(response: response.response)
+                completionHandler(.success(gists), next)
+        }
+    }
+    
+    private func getNextPagesFromHeaders(response : HTTPURLResponse?) -> String?
+    {
+        if let linkHeader = response?.allHeaderFields["link"] as? String {
+            let components = linkHeader.characters.split{ $0 == ","}.map{String($0)}
+            for item in components {
+                let rangeOfNext = item.range(of : "rel=\"next\"", options:[])
+                if rangeOfNext != nil {
+                    let rangeOfPaddedURL = item.range(of : "<(.*)>", options : .regularExpression)
+                    if let range = rangeOfPaddedURL {
+                        let nextURL = item.substring(with: range)
+                        let startIndex = nextURL.index(nextURL.startIndex, offsetBy: 1)
+                        let endIndex = nextURL.index(nextURL.endIndex, offsetBy: -2)
+                        let urlRange = startIndex ..< endIndex
+                        return nextURL.substring(with : urlRange)
+                    }
+                }
+            }
+        }
+        
+        return nil
     }
 }
