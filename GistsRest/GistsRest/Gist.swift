@@ -22,7 +22,7 @@ class Gist : ResponseJSONObjectSerializable
         self.m_id = json["id"].string
         self.m_description = json["description"].string
         self.m_ownerLogin = json["owner"]["login"].string
-        self.m_ownerAvatorURL = json["owner"]["avator_url"].string
+        self.m_ownerAvatorURL = json["owner"]["avatar_url"].string
         self.m_url = json["url"].string
     }
     
