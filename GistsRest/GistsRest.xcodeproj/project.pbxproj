@@ -14,6 +14,8 @@
 		68507BC31E754FEC00654588 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68507BC21E754FEC00654588 /* SwiftyJSON.framework */; };
 		68507BC51E756C2B00654588 /* GitHubAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68507BC41E756C2B00654588 /* GitHubAPIManager.swift */; };
 		68507BC71E75783100654588 /* GistRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68507BC61E75783100654588 /* GistRouter.swift */; };
+		68D37FD81E934F2C005F02F6 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D37FD71E934F2C005F02F6 /* LoginViewController.swift */; };
+		68D37FDA1E935858005F02F6 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D37FD91E935858005F02F6 /* SafariServices.framework */; };
 		68D4A4711E73FD19002FC0E4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D4A4701E73FD19002FC0E4 /* AppDelegate.swift */; };
 		68D4A4731E73FD19002FC0E4 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D4A4721E73FD19002FC0E4 /* MasterViewController.swift */; };
 		68D4A4751E73FD19002FC0E4 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D4A4741E73FD19002FC0E4 /* DetailViewController.swift */; };
@@ -30,6 +32,8 @@
 		68507BC21E754FEC00654588 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = "../SwiftyJSON/build/Debug-iphoneos/SwiftyJSON.framework"; sourceTree = "<group>"; };
 		68507BC41E756C2B00654588 /* GitHubAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubAPIManager.swift; sourceTree = "<group>"; };
 		68507BC61E75783100654588 /* GistRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GistRouter.swift; sourceTree = "<group>"; };
+		68D37FD71E934F2C005F02F6 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		68D37FD91E935858005F02F6 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
 		68D4A46D1E73FD19002FC0E4 /* GistsRest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GistsRest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68D4A4701E73FD19002FC0E4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		68D4A4721E73FD19002FC0E4 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
@@ -45,6 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68D37FDA1E935858005F02F6 /* SafariServices.framework in Frameworks */,
 				68507BC31E754FEC00654588 /* SwiftyJSON.framework in Frameworks */,
 				68507BC11E754FE500654588 /* Alamofire.framework in Frameworks */,
 			);
@@ -56,6 +61,7 @@
 		68507BBF1E754FE500654588 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				68D37FD91E935858005F02F6 /* SafariServices.framework */,
 				68507BC21E754FEC00654588 /* SwiftyJSON.framework */,
 				68507BC01E754FE500654588 /* Alamofire.framework */,
 			);
@@ -94,6 +100,7 @@
 				681D35301E7D5DF400E1C631 /* Gist.swift */,
 				681D35321E7D6EED00E1C631 /* ResponseJSONObjectSerializable.swift */,
 				681D35341E7D701400E1C631 /* AlmofireRequest_JSONSerializable.swift */,
+				68D37FD71E934F2C005F02F6 /* LoginViewController.swift */,
 			);
 			path = GistsRest;
 			sourceTree = "<group>";
@@ -130,6 +137,7 @@
 				TargetAttributes = {
 					68D4A46C1E73FD19002FC0E4 = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = 6R7A7CNGE6;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -170,6 +178,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68D37FD81E934F2C005F02F6 /* LoginViewController.swift in Sources */,
 				68D4A4751E73FD19002FC0E4 /* DetailViewController.swift in Sources */,
 				681D35351E7D701400E1C631 /* AlmofireRequest_JSONSerializable.swift in Sources */,
 				68507BC51E756C2B00654588 /* GitHubAPIManager.swift in Sources */,
@@ -300,6 +309,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 6R7A7CNGE6;
 				INFOPLIST_FILE = GistsRest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = cylof22.GistsRest;
@@ -312,6 +322,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 6R7A7CNGE6;
 				INFOPLIST_FILE = GistsRest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = cylof22.GistsRest;

@@ -7,13 +7,16 @@
 //
 
 import UIKit
+import SafariServices
 
-class MasterViewController: UITableViewController {
+class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariViewControllerDelegate {
 
+    var safariViewController : SFSafariViewController?
     var detailViewController: DetailViewController? = nil
     var gists = [Gist]()
     var nextPageURLString : String?
     var isLoading = false
+    
     var dateFormatter = DateFormatter()
     
     override func viewDidLoad() {
@@ -27,6 +30,9 @@ class MasterViewController: UITableViewController {
             let controllers = split.viewControllers
             self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
         }
+        
+        let defaults = UserDefaults.standard
+        defaults.set(false, forKey: "loadingOAuthToken")
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -39,16 +45,17 @@ class MasterViewController: UITableViewController {
             self.dateFormatter.timeStyle = DateFormatter.Style.long
         }
         
+        let defaults = UserDefaults.standard
+        if(!defaults.bool(forKey: "loadingOAuthToken")) {
+            loadInitialData()
+        }
+        
         // initial the gist view
         if(nextPageURLString == nil) {
             loadGists(urlToLoad: nil)
         }
         
         super.viewWillAppear(animated)
-        //loadGists(urlToLoad: nextPageURLString)
-        
-        
-        //GitHubAPIManager.sharedInstance.getStarredGistWithBasicAuth()
     }
 
     override func didReceiveMemoryWarning() {
@@ -134,13 +141,16 @@ class MasterViewController: UITableViewController {
         }
     }
 
-    func loadGists(urlToLoad : String?)
-    {
+    func loadGists(urlToLoad : String?) {
+        if(!GitHubAPIManager.sharedInstance.hasOAuthToken()) {
+            return
+        }
+        
         self.isLoading = true;
-        GitHubAPIManager.sharedInstance.getPublicGists(pageToLoad: urlToLoad) { (result, nextPage) in
+        GitHubAPIManager.sharedInstance.getStarredGists(pageToLoad: urlToLoad) { (result, nextPage) in
             self.nextPageURLString = nextPage
             self.isLoading = false
-            
+
             if(self.refreshControl != nil && self.refreshControl!.isRefreshing) {
                 self.refreshControl!.endRefreshing()
             }
@@ -149,7 +159,7 @@ class MasterViewController: UITableViewController {
                 print(result.error!)
                 return
             }
-            
+
             if let fetchedGists = result.value {
                 if self.nextPageURLString == nil {
                     self.gists = fetchedGists
@@ -157,21 +167,69 @@ class MasterViewController: UITableViewController {
                     self.gists += fetchedGists
                 }
             }
-            
+
             let now = Date()
             let updateString = "Last Updated at " + self.dateFormatter.string(from: now)
             self.refreshControl?.attributedTitle = NSAttributedString(string : updateString)
             
             self.tableView.reloadData()
-            
+        }
+    }
+    
+    func loadInitialData()
+    {
+        self.isLoading = true
+        GitHubAPIManager.sharedInstance.OAuthTokenCompletionHander = { (error) -> Void in
+            self.safariViewController?.dismiss(animated: true, completion: nil)
+            if let error = error {
+                print(error)
+                self.isLoading = false
+                self.showOAuthLoginView()
+            } else {
+                self.loadGists(urlToLoad: nil)
+            }
+        }
+        
+        if(!GitHubAPIManager.sharedInstance.hasOAuthToken()) {
+            showOAuthLoginView()
+        }
+        else {
+            self.loadGists(urlToLoad: nil)
         }
     }
     
     func refresh(sender : AnyObject)
     {
+        let defaults = UserDefaults.standard
+        defaults.set(false, forKey: "loadingOAuthToken")
         nextPageURLString = nil
-        loadGists(urlToLoad: nil)
+        loadInitialData()
     }
-
+    
+    func showOAuthLoginView() {
+        let storyBoard = UIStoryboard(name : "Main", bundle : Bundle.main)
+        if let loginVC = storyBoard.instantiateViewController(withIdentifier: "LoginViewController") as? LoginViewController {
+            loginVC.m_delegate = self
+            self.present(loginVC, animated: true, completion: nil)
+        }
+    }
+    
+    func didTapLoginButton() {
+        let defaults = UserDefaults.standard
+        defaults.set(true, forKey: "loadingOAuthToken")
+        
+        self.dismiss(animated: false, completion: nil)
+        
+        if let authURL = GitHubAPIManager.sharedInstance.urlToStartOAuth2Login() {
+            safariViewController = SFSafariViewController(url:authURL as URL)
+            safariViewController?.delegate = self
+            if safariViewController != nil {
+                self.present(safariViewController!, animated: true, completion: nil)
+            }
+        } else {
+            defaults.set(false, forKey: "loadingOAuthToken")
+            
+        }
+    }
 }
 

@@ -48,6 +48,11 @@ enum GistRouter : URLRequestConvertible {
         let resultURL = baseURL?.appendingPathComponent(result.path)
         
         let urlRequest = NSMutableURLRequest(url: resultURL!)
+        
+        if let token = GitHubAPIManager.sharedInstance.OAuthToken {
+            urlRequest.setValue("token \(token)", forHTTPHeaderField: "Authorization")
+        }
+        
         urlRequest.httpMethod = method.rawValue
         
         return urlRequest as URLRequest
