@@ -14,9 +14,10 @@ import UIKit
 class GitHubAPIManager
 {
     static let sharedInstance = GitHubAPIManager();
+    static let ErrorDomain = "com.error.GitHubAPIManager"
     
     var OAuthToken : String? = nil
-    var OAuthTokenCompletionHander : ((NSError?) -> Void)? = nil
+    var OAuthTokenCompletionHandler : ((NSError?) -> Void)? = nil
     
     let clientId = "098a02c4e7928561c4d2"
     let clientSecret = "e37cf85af0af39c9fdfa2240944f8313b62dfd11"
@@ -42,6 +43,11 @@ class GitHubAPIManager
         else {
             let defaults = UserDefaults.standard
             defaults.set(false, forKey: "loadingOAuthToken")
+            if let completionHandler = self.OAuthTokenCompletionHandler {
+                let error = NSError(domain: GitHubAPIManager.ErrorDomain, code: -1,
+                                    userInfo: [NSLocalizedDescriptionKey: "Could not obtain an auth code", NSLocalizedRecoverySuggestionErrorKey: "Please retry your request"])
+                completionHandler(error)
+            }
         }
     }
     
@@ -60,7 +66,8 @@ class GitHubAPIManager
                 
                 print(response.result.value)
                 // TODO: handle response to extract OAuth token
-                if let receivedResults = response.result.value, let jsonData = receivedResults.data(using: String.Encoding.utf8, allowLossyConversion: false) { let jsonResults = JSON(data: jsonData)
+                if let receivedResults = response.result.value, let jsonData = receivedResults.data(using: String.Encoding.utf8, allowLossyConversion: false) {
+                    let jsonResults = JSON(data: jsonData)
                     for (key, value) in jsonResults {
                         switch key {
                         case "access_token":
@@ -77,6 +84,19 @@ class GitHubAPIManager
                         }
                     }
                 }
+            }
+        
+        let defaults = UserDefaults.standard
+        defaults.set(false, forKey: "loadingOAuthToken")
+        
+        if let completionHandler = self.OAuthTokenCompletionHandler {
+            if(hasOAuthToken()) {
+                completionHandler(nil)
+            } else {
+                let noOAuthError = NSError(domain: GitHubAPIManager.ErrorDomain, code: -1,
+                                           userInfo: [NSLocalizedDescriptionKey: "Could not obtain an OAuth token", NSLocalizedRecoverySuggestionErrorKey: "Please retry your request"])
+                //completionHandler(noOAuthError)
+            }
         }
     }
     

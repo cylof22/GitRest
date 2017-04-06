@@ -179,7 +179,7 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
     func loadInitialData()
     {
         self.isLoading = true
-        GitHubAPIManager.sharedInstance.OAuthTokenCompletionHander = { (error) -> Void in
+        GitHubAPIManager.sharedInstance.OAuthTokenCompletionHandler = { (error) -> Void in
             self.safariViewController?.dismiss(animated: true, completion: nil)
             if let error = error {
                 print(error)
@@ -228,8 +228,31 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
             }
         } else {
             defaults.set(false, forKey: "loadingOAuthToken")
-            
+            if let completionHandler = GitHubAPIManager.sharedInstance.OAuthTokenCompletionHandler {
+                let error = NSError(domain: GitHubAPIManager.ErrorDomain, code: -1, userInfo:
+                    [NSLocalizedDescriptionKey: "Couldn't create an OAuth authorization URL", NSLocalizedRecoverySuggestionErrorKey: "Please retry your request"])
+                completionHandler(error)
+            }
         }
     }
+    
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+//    func safariViewController(_ controller: SFSafariViewController, didCompleteInitialLoad didLoadSuccessfully: Bool) {
+//        // Detect not being able to load the OAuth URL
+//        if (!didLoadSuccessfully) {
+//            let defaults = UserDefaults.standard
+//            defaults.set(false, forKey: "loadingOAuthToken")
+//            if let completionHandler = GitHubAPIManager.sharedInstance.OAuthTokenCompletionHandler {
+//                let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorNotConnectedToInternet,
+//                                    userInfo: [NSLocalizedDescriptionKey: "No Internet Connection",
+//                                               NSLocalizedRecoverySuggestionErrorKey: "Please retry your request"])
+//                completionHandler(error)
+//            }
+//            controller.dismiss(animated: true, completion: nil)
+//        }
+//    }
 }
 
