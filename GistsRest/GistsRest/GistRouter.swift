@@ -12,7 +12,7 @@ import Alamofire
 enum GistRouter : URLRequestConvertible {
     static let baseURLString : String = "https://api.github.com"
     
-    case GetPublic() // Get https://api/github.com/gists/public
+    case GetPublic() // Get https://api.github.com/gists/public
     
     case GetStarred()
     
