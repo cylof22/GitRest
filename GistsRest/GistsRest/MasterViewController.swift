@@ -147,7 +147,7 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
         }
         
         self.isLoading = true;
-        GitHubAPIManager.sharedInstance.getStarredGists(pageToLoad: urlToLoad) { (result, nextPage) in
+        GitHubAPIManager.sharedInstance.getMineGists(pageToLoad: urlToLoad) { (result, nextPage) in
             self.nextPageURLString = nextPage
             self.isLoading = false
 

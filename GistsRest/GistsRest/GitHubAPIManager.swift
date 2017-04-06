@@ -139,6 +139,15 @@ class GitHubAPIManager
         }
     }
     
+    
+    func getMineGists(pageToLoad : String?, completionHanlder : @escaping (Result<[Gist]>, String?) -> Void) {
+        if let urlString = pageToLoad {
+            self.getGists(urlRequest: GistRouter.GetPath(urlString), completionHandler: completionHanlder)
+        } else {
+            self.getGists(urlRequest: GistRouter.GetMine(), completionHandler: completionHanlder)
+        }
+    }
+    
     func getStarredGistWithOAuth2() -> Void
     {
         Alamofire.request(GistRouter.GetStarred()).responseJSON {
